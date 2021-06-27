@@ -1,3 +1,5 @@
+////invite link https://discord.com/oauth2/authorize?client_id=801269435830763570&scope=bot
+//hell
 const Discord = require("discord.js");
 const cfg = require('../watsBotCfg.json');
 const XMLHttpRequest = require('xmlhttprequest')//.XMLHttpRequest; ? does this go here? probably
@@ -29,6 +31,8 @@ try {
 }catch(err){
     client.login(process.env.bearerToken);
 }
+
+
 
 client.on('ready', () => {
     console.log('Logged in as ' + client.user.tag + '!');
@@ -64,11 +68,10 @@ client.on('message', message => {
 })
 
 
-// identify twitter link, later use regex
+// identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /[0-9]{19}/
 client.on('message', message => {
     if(message.content.match(tweetRE) && !message.author.bot){
-        message.reply("twitter link identified");
         command = client.commands.get('twitterEmbed');
         command.execute(message, bearerToken);
     }

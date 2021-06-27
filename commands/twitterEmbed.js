@@ -24,12 +24,20 @@ module.exports = {
         HttpReq.setRequestHeader('Authorization', 'Bearer ' + token);
         HttpReq.send();
         HttpReq.addEventListener('load', () => {
-            
+
+        var parsedResponse = JSON.parse(HttpReq.responseText);
+
         try{
-            if(JSON.parse(HttpReq.responseText)['entities']['media'][0]['media_url'].includes('ext_tw_video')){
-                message.channel.send(JSON.parse(HttpReq.responseText)['extended_entities']['media'][0]['video_info']['variants'][2]['url']);
+            if(parsedResponse['entities']['media'][0]['media_url'].includes('ext_tw_video') || parsedResponse['entities']['media'][0]['media_url'].includes('amplify_video_thumb')){
+                if(parsedResponse['extended_entities']['media'][0]['video_info']['variants'].slice(-1)[0]['bitrate']!=null){
+                    message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'].slice(-1)[0]['url']);
+                }else{
+                    message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'].slice(-2)[0]['url']);
+                }
+                //console.log(HttpReq.responseText);
             }else{
                 console.log('its a twitter post but its not a video');
+                console.log(HttpReq.responseText);
             }
 
             return
