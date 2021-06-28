@@ -40,6 +40,7 @@ client.on('ready', () => {
 })
 
 
+
 client.on('message', message => {
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
 
