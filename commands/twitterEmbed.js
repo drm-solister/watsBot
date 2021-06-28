@@ -34,7 +34,7 @@ module.exports = {
                 }else{
                     message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'].slice(-2)[0]['url']);
                 }
-                //console.log(HttpReq.responseText);
+                console.log(HttpReq.responseText);
             }else{
                 console.log('its a twitter post but its not a video');
                 console.log(HttpReq.responseText);
@@ -43,7 +43,8 @@ module.exports = {
             return
 
         }catch(err){
-            console.log('invalid link');
+            console.log('invalid link, or missing twitter api token');
+            console.log(HttpReq.responseText);
             return("invalid link");
         }
 
