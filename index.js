@@ -36,7 +36,7 @@ try {
 
 client.on('ready', () => {
     console.log('Logged in as ' + client.user.tag + '!');
-    client.user.setActivity("w.embed [enable/disable]");
+    client.user.setActivity("embeding twitter videos");
 })
 
 
