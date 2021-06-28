@@ -24,7 +24,7 @@ try {
     client.login(process.env.token);
 }
 
-//              tries to get twitter API token from local files or environmental variable otherwise
+//              tries to get twitter API token from my local files or environmental variable otherwise
 var bearerToken;
 try {
     bearerToken = cfg.bearerToken;
