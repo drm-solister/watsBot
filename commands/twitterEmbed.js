@@ -40,7 +40,7 @@ module.exports = {
                 message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url)
 //                console.log(HttpReq.responseText);
             }else{
-                console.log('its a twitter post but its not a video');
+                console.log('its a twitter post but its not a video: ' + message.content);
 //                console.log(HttpReq.responseText);
             }
 
