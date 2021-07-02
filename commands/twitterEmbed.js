@@ -30,6 +30,9 @@ module.exports = {
         var largestBitrateIndex = -1;
 
         try{
+            if(parsedResponse['extended_entities'] == null)
+                return;
+
             if(parsedResponse['extended_entities']['media'][0]['type'] == 'video' || parsedResponse['extended_entities']['media'][0]['type'] == 'animated_gif'){
 
                 if(parsedResponse['extended_entities']['media'][0]['type'] == 'video') //if its a video find the highest bitrate link
@@ -57,7 +60,8 @@ module.exports = {
 
         }catch(err){
             console.log('invalid link, or missing twitter api token');
-            console.log(HttpReq.responseText);
+//            console.log(HttpReq.responseText);
+            console.log(parsedResponse['extended_entities']);
             return("invalid link");
         }
 
