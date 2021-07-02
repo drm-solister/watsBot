@@ -77,12 +77,14 @@ client.on('message', message => {
 // identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /[0-9]{19}/
 client.on('message', message => {
-    if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
-        console.log("i dont have permission to send messages in channel " + message.channel.name);
-        return;
-    }
 
     if(message.content.match(tweetRE) && !message.author.bot){
+        
+        if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+            console.log("i dont have permission to send messages in channel " + message.channel.name);
+            return;
+        }
+
         command = client.commands.get('twitterEmbed');
         command.execute(message, bearerToken);
     }
