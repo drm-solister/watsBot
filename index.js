@@ -36,7 +36,7 @@ try {
 
 client.on('ready', () => {
     console.log('Logged in as ' + client.user.tag + '!');
-    client.user.setActivity("embeding twitter videos");
+    client.user.setPresence({ activity: { name: 'embeding twitter videos' }});
 })
 
 
