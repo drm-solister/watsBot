@@ -44,6 +44,11 @@ client.on('ready', () => {
 client.on('message', message => {
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
 
+    if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+        console.log("i dont have permission to send messages in channel " + message.channel.name);
+        return;
+    }
+
     const args = message.content.slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
