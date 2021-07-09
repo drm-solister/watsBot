@@ -6,6 +6,7 @@ const {MessageAttachment} = require('discord.js')
 
 let tweetRE = /[0-9]{19}/
 let spoilerRE = /\|\|[a-zA-Z0-9_/.:?=]*\|\|/
+let fxtweetRE = /fxtwitter.com/
 
 module.exports = {
     name: "twitterEmbed",
@@ -46,7 +47,7 @@ module.exports = {
                 if(parsedResponse['extended_entities']['media'][0]['type'] == 'animated_gif') //if its a gif there should only be one link
                     largestBitrateIndex = 0;
 
-                if(spoilerRE.test(message.content)){
+                if(spoilerRE.test(message.content) || fxtweetRE.test(message.content)){
                     return; //it just wont send things if the link is spoilered because i cant think of a better way
 //                    videoAttach = new MessageAttachment(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url, 'SPOILER_FILE.mp4');
 //                    message.channel.send(videoAttach);
