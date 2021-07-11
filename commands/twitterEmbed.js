@@ -1,9 +1,12 @@
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const DOMParser = require('xmldom').DOMParser;
+const {MessageAttachment} = require('discord.js')
 
 // if someone is reading this im sorry i have no fucking clue how youre supposed to format code to make it readable. 
 
 let tweetRE = /[0-9]{19}/
+let spoilerRE = /\|\|[a-zA-Z0-9_/.:?=]*\|\|/
+let fxtweetRE = /fxtwitter.com/
 
 module.exports = {
     name: "twitterEmbed",
@@ -28,27 +31,38 @@ module.exports = {
         var largestBitrateIndex = -1;
 
         try{
-            if(parsedResponse['entities']['media'][0]['media_url'].includes('ext_tw_video') || parsedResponse['entities']['media'][0]['media_url'].includes('amplify_video_thumb')){
-                if(parsedResponse['extended_entities']['media'][0]['video_info']['variants'].length!=0)
-                    for(var i = 0; i<parsedResponse['extended_entities']['media'][0]['video_info']['variants'].length; i++){ //find the video with the higest bitrate otherwise you might get a 640x480 vid or invalid link
-//                        console.log(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][i].bitrate);
+            if(parsedResponse['extended_entities'] == null)
+                return;
+
+            if(parsedResponse['extended_entities']['media'][0]['type'] == 'video' || parsedResponse['extended_entities']['media'][0]['type'] == 'animated_gif'){
+
+                if(parsedResponse['extended_entities']['media'][0]['type'] == 'video') //if its a video find the highest bitrate link
+                    for(var i = 0; i<parsedResponse['extended_entities']['media'][0]['video_info']['variants'].length; i++){ 
                         if(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][i].bitrate > largestBitrate){
                             largestBitrate = parsedResponse['extended_entities']['media'][0]['video_info']['variants'][i].bitrate;
                             largestBitrateIndex = i;
                         }
                     }
-                message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url)
-//                console.log(HttpReq.responseText);
-            }else{
-                console.log('its a twitter post but its not a video: ' + message.content);
-//                console.log(HttpReq.responseText);
+
+                if(parsedResponse['extended_entities']['media'][0]['type'] == 'animated_gif') //if its a gif there should only be one link
+                    largestBitrateIndex = 0;
+
+                if(spoilerRE.test(message.content) || fxtweetRE.test(message.content)){
+                    return; //it just wont send things if the link is spoilered because i cant think of a better way
+//                    videoAttach = new MessageAttachment(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url, 'SPOILER_FILE.mp4');
+//                    message.channel.send(videoAttach);
+                }else{
+                    message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url);
+                }
+
             }
 
-            return
+            return;
 
         }catch(err){
             console.log('invalid link, or missing twitter api token');
-            console.log(HttpReq.responseText);
+//            console.log(HttpReq.responseText);
+            console.log(parsedResponse['extended_entities']);
             return("invalid link");
         }
 

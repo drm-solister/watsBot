@@ -36,13 +36,18 @@ try {
 
 client.on('ready', () => {
     console.log('Logged in as ' + client.user.tag + '!');
-    client.user.setActivity("embeding twitter videos");
+    client.user.setPresence({ activity: { name: 'embeding twitter videos' }});
 })
 
 
 
 client.on('message', message => {
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
+
+    if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+        console.log("i dont have permission to send messages in channel " + message.channel.name);
+        return;
+    }
 
     const args = message.content.slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
@@ -72,7 +77,14 @@ client.on('message', message => {
 // identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /[0-9]{19}/
 client.on('message', message => {
+
     if(message.content.match(tweetRE) && !message.author.bot){
+        
+        if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+            console.log("i dont have permission to send messages in channel " + message.channel.name);
+            return;
+        }
+
         command = client.commands.get('twitterEmbed');
         command.execute(message, bearerToken);
     }
