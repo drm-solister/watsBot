@@ -76,9 +76,13 @@ client.on('message', message => {
 
 // identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /[0-9]{19}/
+let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
 client.on('message', message => {
 
-    if(message.content.match(tweetRE) && !message.author.bot){
+    if(message.author.bot)
+        return;
+
+    if(message.content.match(tweetRE)){
         
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);
@@ -87,5 +91,16 @@ client.on('message', message => {
 
         command = client.commands.get('twitterEmbed');
         command.execute(message, bearerToken);
+    }
+
+    if(message.content.match(pixivRegex)){
+
+        if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+            console.log("i dont have permission to send messages in channel " + message.channel.name);
+            return;
+        }
+
+        command = client.commands.get('pixivEmbed');
+        command.execute(message,bearerToken);
     }
 })
