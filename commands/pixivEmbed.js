@@ -1,7 +1,10 @@
 const fetch = require('node-fetch');
 let pixivIDRegex = /[0-9]{1,}/
+const {MessageEmbed} = require('discord.js');
 
 //this is only possible because of そら's work creating pixiv.moe.   https://github.com/kokororin
+
+//again if someone is reading this, sorry for my shitty code
 
 module.exports = {
     name: "pixivEmbed",
@@ -17,48 +20,60 @@ module.exports = {
 
         let id = message.content.match(pixivIDRegex)[0];
 
-        const promise1 = fetch(`https://www.pixiv.net/ajax/illust/${id}`);
+        fetch(`https://www.pixiv.net/ajax/illust/${id}`)        
+        .then(values => {    // do this stuff after the initial image is sent and you have the data from pixiv.net
 
-        const promise2 = message.channel.send(`https://api.pixiv.moe/image/${id}.png`);
+            values.json().then(result => {
 
+                let firstEmbed = new MessageEmbed();
+                firstEmbed.setColor([135,164,183]);
+                firstEmbed.setImage(result.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/'));
 
-        // do this stuff after the initial image is sent and you have the data from pixiv.net
-        Promise.all([promise1, promise2]).then(values => {
-
-            values[0].json().then(result => {
-                let numResults = result.body.pageCount;
-                if(numResults > 1)
-                {
-                    values[1].react('⏬');
-                    if(numResults > 2){
-                        message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ to show them (will show 5 max)`);
-                    }else{
-                        message.channel.send(`There is **1** more image in this pixiv post. React with ⏬ to show it`);
-                    }
-
-                    const filter = (reaction, user) => reaction.emoji.name == '⏬' && !user.bot;
-                    const collector = values[1].createReactionCollector(filter, {time: 20000});
-
-                    collector.on('collect', collected => {
-                        //send the rest of the images
-                        if(numResults>5)
-                            numResults = 5;
-
-                        imageLinks = "";
-                        console.log(numResults);
-
-                        for(let i = 1; i<=(numResults); i++){
-                            //imageLinks += `https://api.pixiv.moe/image/${id}-${i}.jpg\n`;
-                            imageLinks += result.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/').replace(/_p0/, `_p${i}`) + '\n';
+                message.channel.send(firstEmbed).then(firstImage => {
+                    let numResults = result.body.pageCount;
+                    if(numResults > 1)
+                    {
+                        firstImage.react('⏬');
+                        if(numResults > 2){
+                            message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ to show up to 5 more`);
+                        }else{
+                            message.channel.send(`There is **1** more image in this pixiv post. React with ⏬ to show it`);
                         }
 
-                        message.channel.send(imageLinks);
+                        const filter = (reaction, user) => reaction.emoji.name == '⏬' && !user.bot;
+                        const collector = firstImage.createReactionCollector(filter, {time: 20000});
 
-                    });
-                    collector.on('end', collected => {
-                        //collector closed. unreact?
-                    });
-                }
+                        collector.on('collect', collected => {
+                            //send the rest of the images
+                            if(numResults>5)
+                                numResults = 5;
+
+                            imageLinks = "";
+                            console.log(numResults);
+
+                            let msg = new MessageEmbed();
+                            sendithImage(1);
+
+                            function sendithImage(i){
+
+                                if(i == numResults)
+                                    return;
+                                
+                                msg.setTitle(`${i+1}/${numResults}`);
+                                msg.setColor([135,164,183]);
+                                msg.setImage(result.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/').replace(/_p0/, `_p${i}`));
+                                message.channel.send(msg).then(something => {
+                                    sendithImage(i+1);
+                                });
+                            }
+
+                        });
+                        collector.on('end', collected => {
+                            //collector closed. unreact?
+                        });
+                    }
+
+                })
             })
 
 

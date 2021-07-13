@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const fs = require('fs');
+const {MessageEmbed} = require('discord.js');
 
 
 let testRE = /test/
@@ -12,14 +14,12 @@ module.exports = {
     requireArgs: false,
     execute(message){
 
-        fetch('https://www.pixiv.net/ajax/illust/91079778').then(result => {
-            result.json().then(parsed => {
-                let link = parsed.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/');
-                console.log(link);
-            });
-        });
+            let msg = new MessageEmbed();
+            msg.setTitle('benis');
+            msg.setImage('https://api.pixiv.moe/image/i.pximg.net/img-original/img/2021/07/10/00/00/21/91130567_p2.jpg');
+            message.channel.send(msg);
 
-        //  https://www.pixiv.net/en/artworks/86471275
+            //https://cdn.discordapp.com/attachments/482269726437933067/864318994744082493/02Good.jpg
 
     }
 }
