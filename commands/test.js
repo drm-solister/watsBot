@@ -11,30 +11,15 @@ module.exports = {
     guildOnly: false,
     requireArgs: false,
     execute(message){
-//        console.log(message);
-//        console.log(message.content.match(testRE));
-//        console.log(testRE.test(message.content));
-        
-//        if(spoilerRE.test(message.content))
-//            console.log('that cointained a spoiler');
-/*
-        console.time("single image");
-        fetch('https://api.pixiv.moe/image/91110599.png')
-            .then((res) => {
-                return res
-            })
-            .then((data) => {
-        console.timeEnd("single image");
+
+        fetch('https://www.pixiv.net/ajax/illust/91079778').then(result => {
+            result.json().then(parsed => {
+                let link = parsed.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/');
+                console.log(link);
             });
-*/
-/*        console.time("proxy from pixiv link");
-        fetch('https://api.pixiv.moe/image/i.pximg.net/img-master/img/2021/07/09/01/08/05/91110599_p0_master1200.jpg')
-            .then((res) => {
-                return res
-            })
-            .then((data) => {
-        console.timeEnd("proxy from pixiv link");
-            });
-*/
+        });
+
+        //  https://www.pixiv.net/en/artworks/86471275
+
     }
 }

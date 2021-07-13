@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
-
 let pixivIDRegex = /[0-9]{1,}/
+
+//this is only possible because of そら's work creating pixiv.moe.   https://github.com/kokororin
 
 module.exports = {
     name: "pixivEmbed",
@@ -29,7 +30,11 @@ module.exports = {
                 if(numResults > 1)
                 {
                     values[1].react('⏬');
-                    message.channel.send(`There are **${numResults}** images in this pixiv post. React with ⏬ to show the rest (will show 5 max)`);
+                    if(numResults > 2){
+                        message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ to show them (will show 5 max)`);
+                    }else{
+                        message.channel.send(`There is **1** more image in this pixiv post. React with ⏬ to show it`);
+                    }
 
                     const filter = (reaction, user) => reaction.emoji.name == '⏬' && !user.bot;
                     const collector = values[1].createReactionCollector(filter, {time: 20000});
@@ -42,8 +47,9 @@ module.exports = {
                         imageLinks = "";
                         console.log(numResults);
 
-                        for(let i = 2; i<=(numResults); i++){
-                            imageLinks += `https://api.pixiv.moe/image/${id}-${i}.jpg\n`;
+                        for(let i = 1; i<=(numResults); i++){
+                            //imageLinks += `https://api.pixiv.moe/image/${id}-${i}.jpg\n`;
+                            imageLinks += result.body.urls.original.replace(/https\:\/\//, 'https://api.pixiv.moe/image/').replace(/_p0/, `_p${i}`) + '\n';
                         }
 
                         message.channel.send(imageLinks);
