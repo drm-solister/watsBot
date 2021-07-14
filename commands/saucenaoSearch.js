@@ -10,7 +10,7 @@ httpRE = /http[s]*:\/\//
 module.exports = {
     name: "sauce",
     aliases: ['saucenao', 'reversesearch', 's'],
-    description: "reverse image searching. can include a link with the command (w.sauce <link>), or will search for the last image thats been sent in the channel",
+    description: "reverse image searching. either send the command with a link (w.sauce [link]), or it will search for the last image thats been sent in the channel",
     guildOnly: false,
     requireArgs: true,
     execute(message, args){

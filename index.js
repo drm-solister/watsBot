@@ -49,7 +49,7 @@ client.on('message', message => {
         return;
     }
 
-    const args = message.content.slice(cfg.prefix.length).split(/ +/);
+    const args = message.content.toLowerCase().slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -64,6 +64,9 @@ client.on('message', message => {
         message.channel.send(reply);
         return;
     }
+
+    if(args == 'help')
+        return message.channel.send(command.description);
 
     try{
         command.execute(message, args);
