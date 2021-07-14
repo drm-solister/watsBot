@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const fs = require('fs');
-const {MessageEmbed} = require('discord.js');
+
 
 
 let testRE = /test/
@@ -11,15 +11,29 @@ module.exports = {
     aliases: ['testing', 't'],
     description: "random testing stuff for the test branch",
     guildOnly: false,
+    hidden: true,
     requireArgs: false,
     execute(message){
 
-            let msg = new MessageEmbed();
-            msg.setTitle('benis');
-            msg.setImage('https://api.pixiv.moe/image/i.pximg.net/img-original/img/2021/07/10/00/00/21/91130567_p2.jpg');
-            message.channel.send(msg);
 
-            //https://cdn.discordapp.com/attachments/482269726437933067/864318994744082493/02Good.jpg
+
+            let imageMsg = message.channel.messages.cache.filter(findImage);
+            
+            if(imageMsg.last() != undefined){
+                console.log(imageMsg.last());
+            }else{
+                console.log('no result found');
+            }
+
+            function findImage(input) {
+                if(input.embeds.length != 0)
+                    return true;
+
+                if(input.attachments.size != 0)
+                    return true;
+
+                return false;
+            }
 
     }
 }
