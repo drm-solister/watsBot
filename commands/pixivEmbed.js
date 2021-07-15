@@ -35,13 +35,13 @@ module.exports = {
                     {
                         firstImage.react('⏬');
                         if(numResults > 2){
-                            message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ to show up to 5 more`);
+                            message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ (within 60 seoncds) to show up to 5 more`);
                         }else{
                             message.channel.send(`There is **1** more image in this pixiv post. React with ⏬ to show it`);
                         }
 
                         const filter = (reaction, user) => reaction.emoji.name == '⏬' && !user.bot;
-                        const collector = firstImage.createReactionCollector(filter, {time: 20000});
+                        const collector = firstImage.createReactionCollector(filter, {time: 60000});
 
                         collector.on('collect', collected => {
                             //send the rest of the images
