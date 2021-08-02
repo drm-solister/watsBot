@@ -78,7 +78,7 @@ client.on('message', message => {
 
 
 // identifies twitter link and sends the message to twitterEmbed.js
-let tweetRE = /[0-9]{19}/
+let tweetRE = /twitter\.com\/.*\/[0-9]{19}/
 let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
 client.on('message', message => {
 
