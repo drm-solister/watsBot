@@ -49,7 +49,7 @@ client.on('message', message => {
         return;
     }
 
-    const args = message.content.slice(cfg.prefix.length).split(/ +/);
+    const args = message.content.toLowerCase().slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -65,6 +65,9 @@ client.on('message', message => {
         return;
     }
 
+    if(args == 'help')
+        return message.channel.send(command.description);
+
     try{
         command.execute(message, args);
     }catch(err){
@@ -75,10 +78,14 @@ client.on('message', message => {
 
 
 // identifies twitter link and sends the message to twitterEmbed.js
-let tweetRE = /[0-9]{19}/
+let tweetRE = /twitter\.com\/.*\/[0-9]{19}/
+let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
 client.on('message', message => {
 
-    if(message.content.match(tweetRE) && !message.author.bot){
+    if(message.author.bot)
+        return;
+
+    if(message.content.match(tweetRE)){
         
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);
@@ -87,5 +94,16 @@ client.on('message', message => {
 
         command = client.commands.get('twitterEmbed');
         command.execute(message, bearerToken);
+    }
+
+    if(message.content.match(pixivRegex)){
+
+        if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+            console.log("i dont have permission to send messages in channel " + message.channel.name);
+            return;
+        }
+
+        command = client.commands.get('pixivEmbed');
+        command.execute(message,bearerToken);
     }
 })
