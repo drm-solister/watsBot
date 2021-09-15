@@ -1,5 +1,5 @@
 # watsBot
-discord bot that might actually be used
+Discord bot
 
 
 Features:
