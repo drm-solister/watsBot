@@ -82,3 +82,4 @@ module.exports = {
 }
 
 // need to limit the size of the cache, i dont want it storing every single message right
+// add ability to reply to an image to reverse search

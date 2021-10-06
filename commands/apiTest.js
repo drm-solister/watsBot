@@ -47,7 +47,7 @@ module.exports = {
             console.timeEnd("timer3");
         });  
 
-        // times the response of links like https://boe-tea-pximg.herokuapp.com/regular/85256187
+        // times the response of api.pixiv.moe
         console.time("timer4");
         fetch(`http://api.pixiv.moe`)
         .then((res) => {

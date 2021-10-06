@@ -29,7 +29,9 @@ module.exports = {
                 firstEmbed.setColor([135,164,183]);
                 //firstEmbed.setImage(result.body.urls.original.replace(/https\:\/\//, 'https://boe-tea-pximg.herokuapp.com/'));
                 firstImgId = result.body.urls.original.match(/https.*\/([0-9]*)\_*.*\.[a-z]{3}/)[1];
-                firstEmbed.setImage('https://boe-tea-pximg.herokuapp.com/'+firstImgId);
+                firstEmbed.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId);
+
+//                console.log(firstEmbed);
 
                 message.channel.send(firstEmbed).then(firstImage => {
                     let numResults = result.body.pageCount;
@@ -64,7 +66,7 @@ module.exports = {
                                 msg.setTitle(`${i+1}/${numResults}`);
                                 msg.setColor([135,164,183]);
                                 //msg.setImage(result.body.urls.original.replace(/https\:\/\//, 'https://boe-tea-pximg.herokuapp.com/').replace(/_p0/, `_p${i}`));
-                                msg.setImage('https://boe-tea-pximg.herokuapp.com/'+firstImgId+`/${i}`);
+                                msg.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId+`/${i}`);
                                 message.channel.send(msg).then(something => {
                                     sendithImage(i+1);
                                 });
