@@ -9,7 +9,7 @@ const {MessageEmbed} = require('discord.js');
 module.exports = {
     name: "pixivEmbed",
     aliases: [],
-    description: "embeds NON R18 pixiv links",
+    description: "embeds pixiv links",
     guildOnly: false,
     requiresArgs: false,
     execute(message){
@@ -51,7 +51,7 @@ module.exports = {
                                 numResults = 5;
 
                             imageLinks = "";
-                            console.log(numResults);
+                            //console.log(numResults);
 
                             let msg = new MessageEmbed();
                             sendithImage(1);
@@ -87,5 +87,3 @@ module.exports = {
 
 
 }
-
-//to do - the embeds from pixiv.moe are too slow, get the links that act as a proxy from pixiv later
