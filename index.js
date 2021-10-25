@@ -35,7 +35,7 @@ try {
 
 
 client.on('ready', () => {
-    console.log('Logged in as ' + client.user.tag + '!');
+    console.log('Logged in as ' + client.user.tag + ' at ' + new Date().toTimeString() + '!');
     client.user.setPresence({ activity: { name: 'embeding twitter videos' }});
 })
 
@@ -45,7 +45,7 @@ client.on('message', message => {
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
 
     if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
-        console.log("i dont have permission to send messages in channel " + message.channel.name);
+        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
         return;
     }
 
