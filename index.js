@@ -44,16 +44,16 @@ client.on('ready', () => {
 // recieves all messages
 client.on('message', message => {
 
+    if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
+        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
+        return;
+    }
+
     //conditions that may not be explicit commands go before the command parsing
     if(message.content.toLowerCase().startsWith("padoru padoru"))
         return message.channel.send(padoru());
 
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
-
-    if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
-        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
-        return;
-    }
 
     const args = message.content.toLowerCase().slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
