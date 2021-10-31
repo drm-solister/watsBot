@@ -5,6 +5,7 @@ const cfg = require('../watsBotCfg.json');
 const XMLHttpRequest = require('xmlhttprequest')//.XMLHttpRequest; ? does this go here? probably
 const DOMParser = require('xmldom').DOMParser
 const fs = require('fs');
+const readline = require('readline');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
@@ -40,8 +41,13 @@ client.on('ready', () => {
 })
 
 
-
+// recieves all messages
 client.on('message', message => {
+
+    //conditions that may not be explicit commands go before the command parsing
+    if(message.content.toLowerCase().startsWith("padoru padoru"))
+        return message.channel.send(padoru());
+
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
 
     if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
@@ -76,7 +82,7 @@ client.on('message', message => {
     }
 })
 
-
+// this probably should have been a function thats called inside the first message event listener so that I wouldn't have two event listeners
 // identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /twitter\.com\/.*\/[0-9]{19}/
 let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
@@ -107,3 +113,16 @@ client.on('message', message => {
         command.execute(message,bearerToken);
     }
 })
+
+
+// padoru command only
+function padoru(){
+    if(typeof linksTxt == "undefined"){
+        linksTxt = [];
+        fs.readFileSync('padorus.txt', 'utf-8').split(/\r?\n/).forEach(function(line){
+            linksTxt.push(line);
+          });
+    }
+
+    return linksTxt[Math.floor(Math.random()*linksTxt.length)];
+}
