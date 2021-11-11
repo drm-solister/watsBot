@@ -84,7 +84,7 @@ client.on('message', message => {
 
 // this probably should have been a function thats called inside the first message event listener so that I wouldn't have two event listeners
 // identifies twitter link and sends the message to twitterEmbed.js
-let tweetRE = /twitter\.com\/.*\/[0-9]{19}/
+let tweetRE = /twitter\.com\/.*\/[0-9]{18,20}/
 let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
 client.on('message', message => {
 
