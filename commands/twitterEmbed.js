@@ -4,7 +4,7 @@ const {MessageAttachment} = require('discord.js')
 
 // if someone is reading this im sorry i have no fucking clue how youre supposed to format code to make it readable. 
 
-let tweetRE = /[0-9]{19}/
+let tweetRE = /[0-9]{18,20}/
 let spoilerRE = /\|\|[a-zA-Z0-9_/.:?=]*\|\|/
 let fxtweetRE = /fxtwitter.com/
 
