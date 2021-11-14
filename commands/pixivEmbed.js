@@ -39,7 +39,7 @@ module.exports = {
                     {
                         firstImage.react('⏬');
                         if(numResults > 2){
-                            message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ (within 60 seoncds) to show up to 5 more`);
+                            message.channel.send(`There are **${numResults-1}** more images in this pixiv post. React with ⏬ (within 60 seoncds) to show up to 5 total`);
                         }else{
                             message.channel.send(`There is **1** more image in this pixiv post. React with ⏬ (within 60 seconds) to show it`);
                         }
