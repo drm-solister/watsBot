@@ -47,7 +47,7 @@ module.exports = {
                         const filter = (reaction, user) => reaction.emoji.name == '⏬' && !user.bot;
                         const collector = firstImage.createReactionCollector(filter, {time: 60000});
 
-                        collector.on('collect', collected => {
+                        collector.once('collect', collected => {
                             //send the rest of the images
                             if(numResults>5)
                                 numResults = 5;
