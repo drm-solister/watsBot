@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 let pixivIDRegex = /[0-9]{1,}/
 const {MessageEmbed} = require('discord.js');
+let spoilerRE = /\|\|[a-zA-Z0-9_/.:?=]*\|\|/
 
 //this is only possible because of そら's work creating pixiv.moe.   https://github.com/kokororin
 
@@ -17,6 +18,10 @@ module.exports = {
         /*first send the first image with pixiv.moe.image
         at the same time find if theres more images from pixiv itself if possible
         if there are more images send them from pixiv.moe*/
+
+        if(spoilerRE.test(message.content))
+            return;
+    
 
         let id = message.content.match(pixivIDRegex)[0];
 
