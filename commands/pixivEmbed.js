@@ -36,9 +36,9 @@ module.exports = {
                 firstImgId = result.body.urls.original.match(/https.*\/([0-9]*)\_*.*\.[a-z]{3}/)[1];
                 firstEmbed.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId);
 
-//                console.log(firstEmbed);
+                firstEmbed.setFooter("Artist: whoever the hell the artist is");
 
-                message.channel.send(firstEmbed).then(firstImage => {
+                message.channel.send({embeds: [firstEmbed]}).then(firstImage => {
                     let numResults = result.body.pageCount;
                     if(numResults > 1)
                     {
@@ -72,7 +72,7 @@ module.exports = {
                                 msg.setColor([135,164,183]);
                                 //msg.setImage(result.body.urls.original.replace(/https\:\/\//, 'https://boe-tea-pximg.herokuapp.com/').replace(/_p0/, `_p${i}`));
                                 msg.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId+`/${i}`);
-                                message.channel.send(msg).then(something => {
+                                message.channel.send({embeds: [msg]}).then(something => {
                                     sendithImage(i+1);
                                 });
                             }

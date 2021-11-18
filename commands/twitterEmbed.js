@@ -47,12 +47,18 @@ module.exports = {
                 if(parsedResponse['extended_entities']['media'][0]['type'] == 'animated_gif') //if its a gif there should only be one link
                     largestBitrateIndex = 0;
 
-                if(spoilerRE.test(message.content) || fxtweetRE.test(message.content)){
+                if(fxtweetRE.test(message.content)){
                     return; //it just wont send things if the link is spoilered because i cant think of a better way
 //                    videoAttach = new MessageAttachment(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url, 'SPOILER_FILE.mp4');
 //                    message.channel.send(videoAttach);
                 }else{
-                    message.channel.send(parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url);
+                    let videoLink;
+                    if(spoilerRE.test(message.content)){
+                        videoLink  = "||"+parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url+" ||"
+                    }else{
+                        videoLink = parsedResponse['extended_entities']['media'][0]['video_info']['variants'][largestBitrateIndex].url
+                    }
+                    message.channel.send(videoLink);
                 }
 
             }
@@ -61,6 +67,7 @@ module.exports = {
 
         }catch(err){
             console.log('invalid link, or missing twitter api token');
+            console.log(err);
 //            console.log(HttpReq.responseText);
             console.log(parsedResponse['extended_entities']);
             return("invalid link");
