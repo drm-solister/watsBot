@@ -7,7 +7,9 @@ const DOMParser = require('xmldom').DOMParser
 const fs = require('fs');
 const readline = require('readline');
 
-const client = new Discord.Client();
+const myIntents = new Discord.Intents([Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS]);
+
+const client = new Discord.Client({ intents: myIntents});
 client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(command => command.endsWith('.js'));
@@ -42,7 +44,7 @@ client.on('ready', () => {
 
 
 // recieves all messages
-client.on('message', message => {
+client.on('messageCreate', message => {
 
     if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
         console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
@@ -86,7 +88,7 @@ client.on('message', message => {
 // identifies twitter link and sends the message to twitterEmbed.js
 let tweetRE = /twitter\.com\/.*\/[0-9]{18,20}/
 let pixivRegex = /www\.pixiv\.net[\/en]*\/artworks\/[0-9]*/
-client.on('message', message => {
+client.on('messageCreate', message => {
 
     if(message.author.bot)
         return;
