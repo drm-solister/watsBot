@@ -38,7 +38,7 @@ try {
 
 
 client.on('ready', () => {
-    console.log('Logged in as ' + client.user.tag + ' at ' + new Date().toTimeString() + '!');
+    console.log('Logged in as ' + client.user.tag + ' at ' + new Date().toString() + '!');
     client.user.setPresence({ activity: { name: 'embeding twitter videos' }});
 })
 
@@ -47,7 +47,7 @@ client.on('ready', () => {
 client.on('messageCreate', message => {
 
     if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
-        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
+        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toString());
         return;
     }
 
@@ -128,3 +128,8 @@ function padoru(){
 
     return linksTxt[Math.floor(Math.random()*linksTxt.length)];
 }
+
+// join all new threads
+client.on('threadCreate', threadChannel => {
+    threadChannel.join()
+})

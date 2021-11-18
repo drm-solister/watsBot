@@ -12,7 +12,8 @@ To Do:
 [ ] - Convert short videos to gif 
 [ ] - Spoiler'ed embeds
 [ ] - More reliable pixiv embed?
-[ ] - Check if link has been sent already, automatic recycle emoji
+[ ] - Check if link has been sent already, automatic recycle emoji - probably a bad idea
 [x] - Spoiler twitter videos (newline before link or something like that)
 [x] - Migrate to discord js v13
 [ ] - Local SQL/SQLite database
+[x] - Function in threads
