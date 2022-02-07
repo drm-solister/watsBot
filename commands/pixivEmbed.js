@@ -94,3 +94,14 @@ module.exports = {
 
 
 }
+
+
+/*
+
+"official" boetea scheme: https://boe-tea-pximg.herokuapp.com/c/600x1200_90_webp/img-master/img/2021/11/18/12/06/14/94207745_p5_master1200.jpg
+the scheme i use: https://boe-tea-pximg.herokuapp.com/regular/94011192
+
+
+
+
+*/
