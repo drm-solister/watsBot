@@ -45,7 +45,8 @@ client.on('ready', () => {
 client.on('message', message => {
 
     if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
-        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + new Date().toTimeString());
+        let currentDate = new Date()
+        console.log("i dont have permission to send messages in channel " + message.channel.name + " at " + currentDate.toTimeString() + " on " + currentDate.toDateString());
         return;
     }
 

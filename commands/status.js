@@ -17,7 +17,7 @@ module.exports = {
         let tempRegex = /=([0-9'.C]{1,})/
 
         let temp = execSync("/opt/vc/bin/vcgencmd measure_temp").toString().trim().match(tempRegex)[1]
-        let uptime = execSync("/opt/vc/bin/vcgencmd measure_temp").toString().match(uptimeRegex)[1]
+        let uptime = execSync("uptime").toString().match(uptimeRegex)[1]
 
         return message.channel.send(`Uptime: ${uptime} hours\nSytem temperature: ${temp}`)
 
