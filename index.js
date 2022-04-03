@@ -129,6 +129,21 @@ function padoru(){
     return linksTxt[Math.floor(Math.random()*linksTxt.length)];
 }
 
+// leagueShame command only
+let guilds;
+client.on('ready', () => {
+    client.guilds.fetch().then(result => {
+        guilds = result
+        leagueShame()
+    })
+})
+
+function leagueShame(){
+    client.commands.get('leagueShame').execute(client, guilds);
+
+    setTimeout( () => {leagueShame()}, 5000)
+}
+
 // join all new threads
 client.on('threadCreate', threadChannel => {
     threadChannel.join()

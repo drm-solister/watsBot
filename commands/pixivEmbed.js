@@ -36,7 +36,7 @@ module.exports = {
                 firstImgId = result.body.urls.original.match(/https.*\/([0-9]*)\_*.*\.[a-z]{3}/)[1];
                 firstEmbed.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId);
 
-                firstEmbed.setFooter("Artist: whoever the hell the artist is");
+                firstEmbed.setFooter("Artist: whoever the hell the artist is i didnt do this yet");
 
                 message.channel.send({embeds: [firstEmbed]}).then(firstImage => {
                     let numResults = result.body.pageCount;
