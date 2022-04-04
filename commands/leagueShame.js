@@ -10,9 +10,11 @@ module.exports = {
          //   console.log(guild)
 
         guilds.each(guild => guild.fetch().then(result => {
+            console.log(result.name)
             result.members.list().then(result2 => {
                 result2.each(member => console.log(member.displayName))
-            })
+            })      // for some reason its only getting one user from each server. is there a neater way to 
+                    // nest promises?
         }))
     }
 }
