@@ -6,6 +6,7 @@ const XMLHttpRequest = require('xmlhttprequest')//.XMLHttpRequest; ? does this g
 const DOMParser = require('xmldom').DOMParser
 const fs = require('fs');
 const readline = require('readline');
+const {generate, parse, transform, stringify} = require('csv/sync');
 
 const myIntents = new Discord.Intents([Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS]);
 
@@ -18,6 +19,17 @@ const commandFiles = fs.readdirSync('./commands').filter(command => command.ends
 for (const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
+}
+
+//              get channel preferences from csv file channelPreferences.csv
+let channelPreferences;
+try {
+    const myCsv = fs.readFileSync('../channelPreferences.csv');
+    channelPreferences = parse(myCsv, {columns: ['channelID', 'preferences'], skipEmptyLines: true});
+
+} catch(err) {
+    console.log("The channel preferences csv does not exist, generating now.");
+    fs.writeFileSync('../channelPreferences.csv', "");
 }
 
 //              tries to login with a token (if im running it locally) or an environmental variable if its on a server
@@ -57,7 +69,7 @@ client.on('messageCreate', message => {
 
     if(!message.content.startsWith(cfg.prefix) || message.author.bot) return;
 
-    const args = message.content.toLowerCase().slice(cfg.prefix.length).split(/ +/);
+    let args = message.content.toLowerCase().slice(cfg.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
 
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -73,8 +85,13 @@ client.on('messageCreate', message => {
         return;
     }
 
+    // special cases if args == help or command == enableDisable
     if(args == 'help')
         return message.channel.send(command.description);
+
+    if(command.name == "enableDisable") {
+        args = [args, channelPreferences];
+    }
 
     try{
         command.execute(message, args);
@@ -93,7 +110,13 @@ client.on('messageCreate', message => {
     if(message.author.bot)
         return;
 
-    if(message.content.match(tweetRE)){
+    [pixivOK, twitterOK] = [true, true];
+    if (channelPreferences[message.channel]) {
+        twitterOk = (channelPreferences[message.channel].indexOf("twitter") != -1);
+        pixivOk = (channelPreferences[message.channel].indexOf("pixiv") != -1);
+    }
+
+    if(message.content.match(tweetRE) && twitterOK){
         
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);
@@ -104,7 +127,7 @@ client.on('messageCreate', message => {
         command.execute(message, bearerToken);
     }
 
-    if(message.content.match(pixivRegex)){
+    if(message.content.match(pixivRegex) && pixivOK){
 
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);
@@ -130,19 +153,19 @@ function padoru(){
 }
 
 // leagueShame command only
-let guilds;
-client.on('ready', () => {
-    client.guilds.fetch().then(result => {
-        guilds = result
-        leagueShame()
-    })
-})
+// let guilds;
+// client.on('ready', () => {
+//     client.guilds.fetch().then(result => {
+//         guilds = result
+//         leagueShame()
+//     })
+// })
 
-function leagueShame(){
-    client.commands.get('leagueShame').execute(client, guilds);
+// function leagueShame(){
+//     client.commands.get('leagueShame').execute(client, guilds);
 
-    setTimeout( () => {leagueShame()}, 5000)
-}
+//     setTimeout( () => {leagueShame()}, 5000)
+// }
 
 // join all new threads
 client.on('threadCreate', threadChannel => {
