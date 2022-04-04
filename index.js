@@ -76,7 +76,7 @@ client.on('messageCreate', message => {
 
     if(!command) return;
     
-    if(command.requiresArgs && !args.length)
+    if(command.requiresArgs && !args.length) // why doesnt this work?
     {
         let reply = "This command requires arguments.";
         if(command.usage)
