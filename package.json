@@ -9,7 +9,9 @@
   "author": "ro",
   "license": "ISC",
   "dependencies": {
+    "csv": "^6.0.5",
     "discord.js": "^13.3.1",
+    "gify": "^0.2.0",
     "node-fetch": "^2.6.6",
     "nodemon": "^2.0.15",
     "sagiri": "^3.1.1",

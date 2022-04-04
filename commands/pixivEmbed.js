@@ -36,7 +36,8 @@ module.exports = {
                 firstImgId = result.body.urls.original.match(/https.*\/([0-9]*)\_*.*\.[a-z]{3}/)[1];
                 firstEmbed.setImage('https://boe-tea-pximg.herokuapp.com/regular/'+firstImgId);
 
-                firstEmbed.setFooter("Artist: whoever the hell the artist is i didnt do this yet");
+                // eventually get the artist and put it here. also, turns out this method of adding a footer is depreciated.
+                //firstEmbed.setFooter("Artist: whoever the hell the artist is i didnt do this yet");
 
                 message.channel.send({embeds: [firstEmbed]}).then(firstImage => {
                     let numResults = result.body.pageCount;
@@ -94,3 +95,14 @@ module.exports = {
 
 
 }
+
+
+/*
+
+"official" boetea scheme: https://boe-tea-pximg.herokuapp.com/c/600x1200_90_webp/img-master/img/2021/11/18/12/06/14/94207745_p5_master1200.jpg
+the scheme i use: https://boe-tea-pximg.herokuapp.com/regular/94011192
+
+
+
+
+*/
