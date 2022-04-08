@@ -13,13 +13,13 @@ module.exports = {
         if(process.platform == "win32")
             return message.channel.send("Bot running on windows/testing machine")
 
-        let uptimeRegex = /up([a-zA-Z 1-9]*,[a-zA-Z1-9 :]*)/
-        let tempRegex = /=([0-9'.C]{1,})/
+        //let uptimeRegex = /up([a-zA-Z 1-9]*,[a-zA-Z1-9 :]*)/
+        //let tempRegex = /=([0-9'.C]{1,})/
 
         let temp = execSync("/opt/vc/bin/vcgencmd measure_temp").toString().trim().match(tempRegex)[1]
-        let uptime = execSync("uptime").toString().match(uptimeRegex)[1]
+        let uptime = execSync("uptime -p").toString().trim().slice(3)
 
-        return message.channel.send(`Uptime: ${uptime} hours\nSytem temperature: ${temp}`)
+        return message.channel.send(`Uptime: ${uptime}\nSytem temperature: ${temp}`)
 
 
     }
