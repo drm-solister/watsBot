@@ -28,6 +28,7 @@ try {
     channelPreferences = parse(myCsv, {columns: ['channelID', 'preferences'], skipEmptyLines: true});
 
 } catch(err) {
+    console.log(err);
     console.log("The channel preferences csv does not exist, generating now.");
     fs.writeFileSync('../channelPreferences.csv', "");
 }
@@ -110,13 +111,27 @@ client.on('messageCreate', message => {
     if(message.author.bot)
         return;
 
-    [pixivOK, twitterOK] = [true, true];
-    if (channelPreferences[message.channel]) {
-        twitterOk = (channelPreferences[message.channel].indexOf("twitter") != -1);
-        pixivOk = (channelPreferences[message.channel].indexOf("pixiv") != -1);
-    }
+    //currentChannelPreferences = channelPreferences[channelPreferences.findIndex(x => x.channelID == message.channel.id)].preferences;
 
-    if(message.content.match(tweetRE) && twitterOK){
+    // [pixivOK, twitterOK] = [true, true];
+    // if(currentChannelPreferences.indexOf('twitter') == -1)
+    //     twitterOK = false;
+
+    // if(currentChannelPreferences.indexOf('pixiv') == -1)
+    //     pixivOK = false;
+
+    // if (channelPreferences[message.channel]) {
+    //     twitterOk = (channelPreferences[message.channel].indexOf("twitter") != -1);
+    //     pixivOk = (channelPreferences[message.channel].indexOf("pixiv") != -1);
+    // }
+    //let twitterOK = (currentChannelPreferences.indexOf('twitter') == -1);
+    //let pixivOK = (currentChannelPreferences.indexOf('pixiv') == -1)
+
+    if(message.content.match(tweetRE)){
+
+        currentChannel = channelPreferences[channelPreferences.findIndex(x => x.channelID == message.channel.id)];
+        if (currentChannel != undefined && currentChannel.preferences.indexOf('twitter') != -1)
+            return
         
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);
@@ -127,7 +142,11 @@ client.on('messageCreate', message => {
         command.execute(message, bearerToken);
     }
 
-    if(message.content.match(pixivRegex) && pixivOK){
+    if(message.content.match(pixivRegex)){
+
+        currentChannel = channelPreferences[channelPreferences.findIndex(x => x.channelID == message.channel.id)];
+        if (currentChannel != undefined && currentChannel.preferences.indexOf('pixiv') != -1)
+            return
 
         if(!message.guild.me.permissionsIn(message.channel.id).has('SEND_MESSAGES')){
             console.log("i dont have permission to send messages in channel " + message.channel.name);

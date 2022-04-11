@@ -8,8 +8,9 @@ module.exports = {
     guildOnly: false,
     requireArgs: false,
     execute(message){
-        const attachment = new Discord.MessageAttachment('https://cdn.discordapp.com/attachments/480798157224017943/859188352769851462/image0.png');
-        message.channel.send(attachment);
+        message.channel.send({
+            files: ['https://cdn.discordapp.com/attachments/480798157224017943/859188352769851462/image0.png']
+        })
         return;
     }
 }
