@@ -6,7 +6,7 @@ const {MessageAttachment} = require('discord.js')
 
 let tweetRE = /[0-9]{18,20}/
 let spoilerRE = /\|\|[a-zA-Z0-9_/.:?=]*\|\|/
-let fxtweetRE = /fxtwitter.com/
+let fxtweetRE = /fxtwitter.com|vxtwitter.com/
 
 module.exports = {
     name: "twitterEmbed",
